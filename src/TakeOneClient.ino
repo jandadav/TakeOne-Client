@@ -31,67 +31,7 @@
   char*         TKDpassword;
   IPAddress     TKDServer(192,168,4,1);
   WiFiClient    TKDClient;
-//====================================================================================
 
-  void setup() 
-  {
-    /* ----------------------------------------------------------------------
-     * Setting The I2C Pins SDA, SCL
-     * Because We Didnt Specify Any Pins The Defult
-     * SDA = D4 <GPIO2>, SCL = D5 <GPIO14> For ESP8266 Dev Kit Node MCU v3
-     --------------------------------------------------------------------- */
-    Wire.begin();                   // Begginning The I2C
-    
-    // Setting Up The I2C Of The MPU9250 ------------------------------------
-    Wire.setClock(TWI_FREQ);        // Setting The Frequency MPU9250 Require
-        
-    // Setting The Serial Port ----------------------------------------------
-    Serial.begin(115200);           // Computer Communication
-    
-    // Setting The Mode Of Pins ---------------------------------------------
-    pinMode(LED0, OUTPUT);          // WIFI OnBoard LED Light
-    pinMode(LED1, OUTPUT);          // Indicator For Client #1 Connectivity
-    pinMode(LED2, OUTPUT);          // Indicator For Client #2 Connectivity
-    pinMode(BUTTON, INPUT_PULLUP);  // Initiate Connectivity
-    digitalWrite(LED0, !LOW);       // Turn WiFi LED Off
-    
-    // Print Message Of I/O Setting Progress --------------------------------
-    Serial.println("\nI/O Pins Modes Set .... Done");
-
-    // Starting To Connect --------------------------------------------------
-    WiFi.mode(WIFI_STA);            // To Avoid Broadcasting An SSID
-    WiFi.begin("TAKEONE");          // The SSID That We Want To Connect To
-
-    // Printing Message For User That Connetion Is On Process ---------------
-    Serial.println("!--- Connecting To " + WiFi.SSID() + " ---!");
-
-    // WiFi Connectivity ----------------------------------------------------
-    CheckConnectivity();            // Checking For Connection
-
-    // Stop Blinking To Indicate Connected ----------------------------------
-    digitalWrite(LED0, !HIGH);
-    Serial.println("!-- Client Device Connected --!");
-
-    // Printing IP Address --------------------------------------------------
-    Serial.println("Connected To      : " + String(WiFi.SSID()));
-    Serial.println("Signal Strenght   : " + String(WiFi.RSSI()) + " dBm");
-    Serial.print  ("Server IP Address : ");
-    Serial.println(TKDServer);
-    Serial.print  ("Device IP Address : ");
-    Serial.println(WiFi.localIP());
-    
-    // Conecting The Device As A Client -------------------------------------
-    TKDRequest();
-  }
-
-//====================================================================================
-  
-  void loop()
-  {
-
-    ReadButton();
-  
-  }
 
 //====================================================================================
 
@@ -162,3 +102,74 @@
   }
 
 //====================================================================================
+
+  void spamText()
+  {
+
+          Serial.println("<" + ButtonColor + "-SCORED>");
+          TKDClient.println("<" + ButtonColor + "-SCORED>");
+          TKDClient.flush();
+  }
+
+//====================================================================================
+
+  void setup() 
+  {
+    /* ----------------------------------------------------------------------
+     * Setting The I2C Pins SDA, SCL
+     * Because We Didnt Specify Any Pins The Defult
+     * SDA = D4 <GPIO2>, SCL = D5 <GPIO14> For ESP8266 Dev Kit Node MCU v3
+     --------------------------------------------------------------------- */
+    Wire.begin();                   // Begginning The I2C
+    
+    // Setting Up The I2C Of The MPU9250 ------------------------------------
+    Wire.setClock(TWI_FREQ);        // Setting The Frequency MPU9250 Require
+        
+    // Setting The Serial Port ----------------------------------------------
+    Serial.begin(115200);           // Computer Communication
+    
+    // Setting The Mode Of Pins ---------------------------------------------
+    pinMode(LED0, OUTPUT);          // WIFI OnBoard LED Light
+    pinMode(LED1, OUTPUT);          // Indicator For Client #1 Connectivity
+    pinMode(LED2, OUTPUT);          // Indicator For Client #2 Connectivity
+    pinMode(BUTTON, INPUT_PULLUP);  // Initiate Connectivity
+    digitalWrite(LED0, !LOW);       // Turn WiFi LED Off
+    
+    // Print Message Of I/O Setting Progress --------------------------------
+    Serial.println("\nI/O Pins Modes Set .... Done");
+
+    // Starting To Connect --------------------------------------------------
+    WiFi.mode(WIFI_STA);            // To Avoid Broadcasting An SSID
+    WiFi.begin("TAKEONE");          // The SSID That We Want To Connect To
+
+    // Printing Message For User That Connetion Is On Process ---------------
+    Serial.println("!--- Connecting To " + WiFi.SSID() + " ---!");
+
+    // WiFi Connectivity ----------------------------------------------------
+    CheckConnectivity();            // Checking For Connection
+
+    // Stop Blinking To Indicate Connected ----------------------------------
+    digitalWrite(LED0, !HIGH);
+    Serial.println("!-- Client Device Connected --!");
+
+    // Printing IP Address --------------------------------------------------
+    Serial.println("Connected To      : " + String(WiFi.SSID()));
+    Serial.println("Signal Strenght   : " + String(WiFi.RSSI()) + " dBm");
+    Serial.print  ("Server IP Address : ");
+    Serial.println(TKDServer);
+    Serial.print  ("Device IP Address : ");
+    Serial.println(WiFi.localIP());
+    
+    // Conecting The Device As A Client -------------------------------------
+    TKDRequest();
+  }
+
+//====================================================================================
+  
+  void loop()
+  {
+
+    //ReadButton();
+    spamText();  
+    delayMicroseconds(2000);
+  }
